@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PokeList from './PokeList';
+import PokeLineUp from './PokeLineUp';
 import DetailView from './DetailView';
 import Pokemon from '../Pokemon';
 import './styles/App.css';
@@ -8,7 +9,8 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      pokemon: {}
+      pokemon: {},
+      lineUp: []
     };
 
     this.handleOnClick = this.handleOnClick.bind(this);
@@ -19,7 +21,9 @@ class App extends Component {
       .then(res => res.json())
       .then(data => {
         const pokemon = new Pokemon(data);
-        this.setState({ pokemon });
+        this.state.lineUp.unshift(pokemon);
+        this.setState({ lineUp: [...this.state.lineUp.slice(0, 6)] });
+        console.log("LINE UP: " + this.state.lineUp.map(n => n.id) );
       })
       .catch(err => console.log(err));
   }
@@ -28,7 +32,8 @@ class App extends Component {
     return (
       <div className="App">
         <PokeList handleOnClick={this.handleOnClick} />
-        <DetailView pokemon={this.state.pokemon}/>
+        <PokeLineUp lineup={this.state.lineup} />
+        <DetailView pokemon={this.state.pokemon} />
       </div>
     );
   }
