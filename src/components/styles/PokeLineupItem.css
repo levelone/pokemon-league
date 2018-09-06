@@ -1,0 +1,32 @@
+.poke-item__card {
+  border: 1px solid #EEE;
+  border-radius: 5px;
+  flex: 1 0 30%;
+  margin: 5px;
+  max-width: 170px;
+  position: relative;
+  text-align: center;
+  text-transform: capitalize;
+}
+
+.poke-item__card:hover {
+  background-color: #FAFAFA;
+  cursor: pointer;
+}
+
+.poke-item__header {
+  font-size: 16px;
+  text-transform: capitalize;
+}
+
+.poke-item__remove {
+  position: absolute;
+  right: 5px;
+  text-transform: none;
+  top: 5px;
+  width: 20px;
+}
+
+.poke-item__remove:hover {
+  cursor: pointer;
+}

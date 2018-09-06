@@ -1,35 +1,35 @@
 export const pokeClasses = [
   {
     id: "1",
-    backgroundPosition: "0 0",
+    backgroundPosition: "-10px -15px",
   },
   {
     id: "2",
-    backgroundPosition: "-125px 0",
+    backgroundPosition: "-130px -22px",
   },
   {
     id: "3",
-    backgroundPosition: "-250px 0",
+    backgroundPosition: "-240px -25px",
   },
   {
     id: "4",
-    backgroundPosition: "-375px 0",
+    backgroundPosition: "-385px -10px",
   },
   {
     id: "5",
-    backgroundPosition: "-500px 0",
+    backgroundPosition: "-510px -15px",
   },
   {
     id: "6",
-    backgroundPosition: "-625px 0",
+    backgroundPosition: "-620px -5px",
   },
   {
     id: "7",
-    backgroundPosition: "-767px 0",
+    backgroundPosition: "-780px -10px",
   },
   {
     id: "8",
-    backgroundPosition: "-892px 0",
+    backgroundPosition: "-900px -10px",
   },
   {
     id: "9",
@@ -37,7 +37,7 @@ export const pokeClasses = [
   },
   {
     id: "10",
-    backgroundPosition: "-1142px 0",
+    backgroundPosition: "-1145px -5px",
   },
   {
     id: "11",

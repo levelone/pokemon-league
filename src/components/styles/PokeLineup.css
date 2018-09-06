@@ -1,0 +1,4 @@
+.poke-lineup {
+  display: flex;
+  flex-wrap: wrap;
+}
