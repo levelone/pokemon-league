@@ -107,7 +107,7 @@ class App extends Component {
   handlePokeDetailShow = (event) => {
     const target = event.currentTarget;
     const selectedPokemon = this.setPokemonAttrs(target);
-    this.setState({ selectedPokemon })
+    this.setState({ selectedPokemon: selectedPokemon })
   }
 
   handlePokeDetailCancel = () => {
@@ -133,12 +133,14 @@ class App extends Component {
 
   renderDetailView = () => {
     const selectedPokemon = this.state.selectedPokemon;
+    const key = Math.random().toString(36).slice(2);
 
     if (selectedPokemon.id == null) {
       return <div/>;
     } else {
       return (
         <PokeDetailView
+          key={key}
           lineup={this.state.lineup}
           selectedPokemon={this.state.selectedPokemon}
           handlePokeDetailCancel={this.handlePokeDetailCancel}

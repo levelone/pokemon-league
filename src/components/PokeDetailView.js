@@ -7,7 +7,7 @@ class PokeDetailView extends Component {
 
     this.state = {
       id: 0,
-      nickname: ''
+      nickname: props.selectedPokemon.nickname || ''
     };
   }
 
@@ -55,7 +55,7 @@ class PokeDetailView extends Component {
           <input
             type="text"
             onChange={this.handleChange}
-            defaultValue={this.state.nickname}
+            value={this.state.nickname}
           />
         </div>
 
