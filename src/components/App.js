@@ -8,46 +8,51 @@ import './styles/App.css';
 class App extends Component {
   constructor() {
     super();
-    this.state = { selectedPokemon: {}, lineup: [] };
+
+    this.state = {
+      selectedPokemon: {},
+      lineup: []
+    };
   }
 
   findInLineup(id) {
-    const lineup = this.state.lineup;
+    const lineup = Object.assign([], this.state.lineup);
     return lineup.find(pokemon => pokemon.id === Number(id));
   }
 
   findIndexInLineup(id) {
-    const lineup = this.state.lineup;
+    const lineup = Object.assign([], this.state.lineup);
     return lineup.findIndex(pokemon => pokemon.id === Number(id));
   }
 
   isSelectedPokemon(id) {
-    return this.state.selectedPokemon.id == id;
+    const selectedPokemon = Object.assign({}, this.state.selectedPokemon);
+    return selectedPokemon.id === Number(id);
   }
 
   replaceInLineup(pokemon) {
     const index = this.findIndexInLineup(pokemon.id);
-    const lineup = this.state.lineup;
+    const lineup = Object.assign([], this.state.lineup);
     lineup.splice(index, 1, pokemon);
-    return this.state.lineup
+    return lineup
   }
 
   removeInLineup(pokemon) {
     const index = this.findIndexInLineup(pokemon.id);
-    const lineup = this.state.lineup;
+    const lineup = Object.assign([], this.state.lineup);
     lineup.splice(index, 1);
-    return this.state.lineup
+    return lineup
   }
 
   updatePokemonDetails(pokemon, data) {
     delete data['id'];
-    return Object.assign({}, pokemon, data)
+    return Object.assign({}, pokemon, data);
   }
 
-  togglePokeListClick(id) {
+  togglePokeListClick(id, disable = false) {
     const parentElement = document.getElementsByClassName('poke-list')[0];
     const targetClasses = parentElement.querySelectorAll("button[data-id='" + id + "']")[0].classList;
-    (this.findInLineup(id) == null) ? targetClasses.remove("disabled") : targetClasses.add("disabled");
+    disable ? targetClasses.remove("disabled") : targetClasses.add("disabled");
   }
 
   setPokemonAttrs(target) {
@@ -57,25 +62,28 @@ class App extends Component {
       type: target.querySelector('.poke-item__type').dataset.type.split(','),
       abilities: target.querySelector('.poke-item__abilities').dataset.abilities.split(','),
       sprite: target.querySelector('.poke-item__image').src,
+      movesets: target.querySelector('.poke-item__movesets').dataset.movesets.split(','),
       nickname: target.querySelector('.poke-item__nickname').dataset.nickname || '',
+      favoriteMoves: target.querySelector('.poke-item__favorite-moves').dataset.favoriteMoves.split(',') || [],
+      favoriteColor: target.querySelector('.poke-item__favorite-color').dataset.favoriteColor || '',
     });
   }
 
   addToLineup(pokemon) {
-    const lineup = this.state.lineup;
-    const lastPokemon = lineup[lineup.length - 1] || {};
-    lineup.unshift(pokemon);
-    const isMaxLineup = (lineup.length > 6);
+    const firstIndex = 0;
+    const lineup = Object.assign([], this.state.lineup);
+    const lastPokemon = lineup[lineup.length -1] || {};
+    lineup.splice(firstIndex, 0, pokemon);
 
-    if (isMaxLineup) {
-      lineup.pop();
-      this.togglePokeListClick(lastPokemon.id);
+    if (lineup.length > 6) {
+      lineup.splice((lineup.length - 1), 1);
+      this.togglePokeListClick(lastPokemon.id, true);
     }
 
-    if (isMaxLineup && this.isSelectedPokemon(lastPokemon.id)) {
-      this.setState({ selectedPokemon: {}, lineup });
+    if (this.isSelectedPokemon(lastPokemon.id)) {
+      this.setState({ selectedPokemon: {}, lineup: lineup });
     } else {
-      this.setState({ lineup });
+      this.setState({ lineup: lineup });
     }
   }
 
@@ -86,7 +94,7 @@ class App extends Component {
         .then(data => {
           const pokemon = new Pokemon(data);
           this.addToLineup(pokemon);
-          this.togglePokeListClick(pokemon.id)
+          this.togglePokeListClick(pokemon.id);
         })
         .catch(error => { console.log(error) });
     }
@@ -95,7 +103,7 @@ class App extends Component {
   handlePokeLineupItemRemoval = (id) => {
     const pokemon = this.findInLineup(id);
     const lineup = this.removeInLineup(pokemon);
-    this.togglePokeListClick(id)
+    this.togglePokeListClick(id, true)
 
     if (this.isSelectedPokemon(id)) {
       this.setState({ selectedPokemon: {}, lineup })
@@ -117,8 +125,8 @@ class App extends Component {
   handlePokeDetailSubmit = (formData) => {
     const pokemon = this.findInLineup(formData.id)
     const updatedPokemon = this.updatePokemonDetails(pokemon, formData)
-    const lineup = this.replaceInLineup(updatedPokemon);
-    this.setState({ selectedPokemon: {}, lineup })
+    const newLineup = this.replaceInLineup(updatedPokemon);
+    this.setState({ selectedPokemon: {}, lineup: newLineup })
   }
 
   renderLineup = () => {

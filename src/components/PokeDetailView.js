@@ -6,60 +6,120 @@ class PokeDetailView extends Component {
     super(props);
 
     this.state = {
-      id: 0,
-      nickname: props.selectedPokemon.nickname || ''
+      id: props.selectedPokemon.id || 0,
+      nickname: props.selectedPokemon.nickname || '',
+      favoriteColor: props.selectedPokemon.favoriteColor || '',
+      favoriteMoves: props.selectedPokemon.favoriteMoves || []
     };
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.id !== this.state.id) {
-      this.setState({ ...nextProps.selectedPokemon });
-    }
-  }
-
-  handleChange = (event) => {
-    this.setState({
-      id: this.props.selectedPokemon.id,
-      nickname: event.target.value
-    });
   }
 
   handleSubmit = (event) => {
     event.preventDefault();
-    if (this.state.nickname === "") {
-      this.setState(this.state)
-    } else {
-      this.props.handlePokeDetailSubmit(this.state);
-    }
+    this.props.handlePokeDetailSubmit(this.state);
   }
 
-  renderDetails = ({ selectedPokemon, handlePokeDetailCancel }) => {
+  handleNicknameChange = (event) => {
+    this.setState({ nickname: event.target.value });
+  }
+
+  handleFavoriteColorChange = (event) => {
+    const classname = event.target.classList[0];
+    const selector = document.querySelector("." + classname);
+    this.setState({ favoriteColor: selector.value });
+  }
+
+  handleFavoriteMovesChange = (event) => {
+    const firstIndex = 0;
+    const favoriteMoves = this.state.favoriteMoves;
+    favoriteMoves.splice(firstIndex, 0, event.target.value);
+
+    if (favoriteMoves.length > 4) {
+      favoriteMoves.splice((favoriteMoves.length - 1), 1);
+    }
+
+    this.setState({ favoriteMoves: favoriteMoves })
+  }
+
+  renderSelectMovesetBox = ({ selectedPokemon }) => {
+    const movesets = selectedPokemon.movesets.map((moveset, index) => {
+      return <option key={index} value={moveset}>{moveset}</option>
+    })
+    return <select onChange={this.handleFavoriteMovesChange} >{movesets}</select>
+  }
+
+  renderFavoriteMoves = ({ selectedPokemon }) => {
+    const moves = Object.assign([], selectedPokemon.favoriteMoves);
+    const moveList = moves.map((move, index) => {
+      if (move == '') {
+        return
+      } else {
+        return <li key={index}>{move}</li>
+      }
+    })
+
+    return(
+      <ul className="poke-detail__move-list">
+        {moveList}
+      </ul>
+    )
+  }
+
+  renderDetails = ({ selectedPokemon }) => {
     return (
       <div className="poke-detail__card">
-        <span className="poke-detail__close" onClick={handlePokeDetailCancel}>x</span>
-        <img className="" src={selectedPokemon.sprite} alt="sprite" />
-        <div className="">
-          <h1 className="">ID: {selectedPokemon.id} - {selectedPokemon.name}</h1>
-          <p className="">type: {selectedPokemon.type.join(", ")}</p>
-          <p className="">abilities: {selectedPokemon.abilities.join(", ")}</p>
+        <img src={selectedPokemon.sprite} alt="sprite" />
+        <div className="poke-detail__info">
+          <h2>ID: {selectedPokemon.id} - {selectedPokemon.name}</h2>
+          <p>type: {selectedPokemon.type.join(", ")}</p>
+          <p>abilities: {selectedPokemon.abilities.join(", ")}</p>
         </div>
       </div>
     )
   }
 
-  renderForm = () => {
+  renderSelectColorBox = () => {
+    return(
+      <select
+        className="poke-detail__select-color"
+        onChange={this.handleFavoriteColorChange}
+        value={this.state.favoriteColor}>
+        <option value=""></option>
+        <option value="green">Green</option>
+        <option value="red">Red</option>
+        <option value="blue">Blue</option>
+        <option value="yellow">Yellow</option>
+      </select>
+    )
+  }
+
+  renderForm = ({ selectedPokemon }) => {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <div>
-          <label>nickname: </label>
+      <form className="poke-detail__form" onSubmit={this.handleSubmit}>
+        <div className="poke-detail__form-data">
+          <label>nickname</label>
           <input
             type="text"
-            onChange={this.handleChange}
+            onChange={this.handleNicknameChange}
             value={this.state.nickname}
           />
         </div>
 
-        <input type="submit" value="Submit" />
+        <div className="poke-detail__form-data">
+          <label>favorite color</label>
+          {this.renderSelectColorBox()}
+        </div>
+
+        <div className="poke-detail__form-data">
+          <label>favorite moves</label>
+          {this.renderSelectMovesetBox({ selectedPokemon })}
+          {this.renderFavoriteMoves({ selectedPokemon })}
+        </div>
+
+        <input
+          className="poke-detail__form-submit"
+          type="submit"
+          value="Submit"
+        />
       </form>
     )
   }
@@ -67,8 +127,13 @@ class PokeDetailView extends Component {
   render() {
     return (
       <div className="poke-detail">
+        <span
+          className="poke-detail__close"
+          onClick={this.props.handlePokeDetailCancel}
+        >x</span>
+
         {this.renderDetails({ ...this.props })}
-        {this.renderForm()}
+        {this.renderForm({ ...this.props })}
       </div>
     )
   }

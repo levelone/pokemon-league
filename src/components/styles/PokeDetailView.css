@@ -1,14 +1,47 @@
 .poke-detail {
-  border-radius: 5px;
+  align-items: center;
   background-color: #000;
+  border-radius: 5px;
   color: #FFF;
+  display: flex;
   height: 290px;
+  justify-content: center;
   margin: 5px;
+  position: relative;
   text-align: center;
 }
 
 .poke-detail__card {
+  flex: 1;
   position: relative;
+}
+
+.poke-detail__info {
+  padding: 0 30px;
+}
+
+.poke-detail__form {
+  flex: 1;
+  text-align: left;
+}
+
+.poke-detail__move-list {
+  list-style: circle;
+  margin-left: 15px;
+  padding-top: 10px;
+}
+
+.poke-detail__form-data {
+  padding-top: 10px;
+}
+
+.poke-detail__form-data > input, select {
+  margin-left: 5px;
+  max-width: 150px;
+}
+
+.poke-detail__form-submit {
+  margin-top: 10px;
 }
 
 .poke-detail__close {
