@@ -1,6 +1,17 @@
-This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
+# Welcome to Pokemon League!
 
-Below you will find some information on how to perform common tasks.<br>
-You can find the most recent version of this guide [here](https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md).
+> _This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app)._
 
-![pokemon_league](https://raw.githubusercontent.com/levelone/pokemon-league/ed8a71f8958d23d924427c03e566f8122f2683f9/Screen%20Shot%202018-09-10%20at%203.57.14%20AM.png)
+Before we start, please have [git](https://www.linode.com/docs/development/version-control/how-to-install-git-on-linux-mac-and-windows/), [yarn + npm](https://yarnpkg.com/en/docs/install#mac-stable) setup correctly in your terminal.
+
+Once you're setup, go ahead and clone this repository:
+```
+git clone https://github.com/levelone/pokemon-league.git
+```
+
+Change directory and start app:
+```
+cd pokemon-league && npm start
+```
+
+![pokemon_league](https://raw.githubusercontent.com/levelone/pokemon-league/master/Screen%20Shot%202018-09-11%20at%202.19.02%20PM.png)
